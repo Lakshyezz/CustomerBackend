@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,16 +23,20 @@ public class LearnSpringApplication {
 		this.customerRepository = customerRepository;
 	}
 	
-
+	
 
 	public static void main(String[] args) {
 		System.out.println("app running");
 		SpringApplication.run(LearnSpringApplication.class, args);
 	}
 
-	@GetMapping
-	public List<Customer> getCustomers() {
-		return	customerRepository.findAll();
+	@PutMapping("{customerId}")
+	public void  updateCustomer(@RequestBody NewCustomerRequest request,@PathVariable("customerId") Integer id){
+		Customer customer = customerRepository.getReferenceById(id);
+		  	customer.setAge(request.age);
+			customer.setEmail(request.email);
+			customer.setName(request.name);
+			customerRepository.save(customer);
 	}
 
 	public record NewCustomerRequest(
@@ -39,6 +44,13 @@ public class LearnSpringApplication {
 		String email,
 		Integer age
 	) {}
+
+	@GetMapping
+	public List<Customer> getCustomers() {
+		return	customerRepository.findAll();
+	}
+
+	
 	@PostMapping
 	public void addCustomer(@RequestBody NewCustomerRequest request){
 			Customer customer = new Customer();
