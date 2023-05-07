@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
 @RestController
-@RequestMapping("api/v1/customers")
+@RequestMapping("api/v1/customer")
 public class LearnSpringApplication {
 	private final  CustomerRepository customerRepository;
 	
